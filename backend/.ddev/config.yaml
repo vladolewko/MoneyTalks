@@ -1,0 +1,14 @@
+name: moneytalks
+type: laravel
+docroot: public
+php_version: "8.4"
+webserver_type: nginx-fpm
+database:
+    type: mariadb
+    version: "10.11"
+nodejs_version: "22"
+use_dns_when_possible: true
+composer_version: "2"
+web_environment:
+    - APP_ENV=local
+    - APP_DEBUG=1

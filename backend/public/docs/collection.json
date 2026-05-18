@@ -1,0 +1,459 @@
+{
+    "variable": [
+        {
+            "id": "baseUrl",
+            "key": "baseUrl",
+            "type": "string",
+            "name": "string",
+            "value": "https:\/\/moneytalks.ddev.site"
+        }
+    ],
+    "info": {
+        "name": "MoneyTalks API",
+        "_postman_id": "8abd8cd2-99f4-4eba-a0b8-aabb3a8fabf9",
+        "description": "REST API \u043c\u043e\u0431\u0456\u043b\u044c\u043d\u043e\u0433\u043e \u0442\u0440\u0435\u043a\u0435\u0440\u0430 \u0444\u0456\u043d\u0430\u043d\u0441\u0456\u0432 MoneyTalks (Laravel + Sanctum).",
+        "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
+    },
+    "item": [
+        {
+            "name": "Authentication",
+            "description": "",
+            "item": [
+                {
+                    "name": "\u0420\u0435\u0454\u0441\u0442\u0440\u0430\u0446\u0456\u044f \u0430\u0431\u043e \u0432\u0445\u0456\u0434 \u0437\u0430 \u043f\u0440\u0438\u0441\u0442\u0440\u043e\u0454\u043c.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/auth\/device",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/auth\/device"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"device_uuid\":\"550e8400-e29b-41d4-a716-446655440000\"}"
+                        },
+                        "description": "\u041a\u043b\u0456\u0454\u043d\u0442 \u043d\u0430\u0434\u0441\u0438\u043b\u0430\u0454 \u0441\u0442\u0430\u0431\u0456\u043b\u044c\u043d\u0438\u0439 `device_uuid`. \u042f\u043a\u0449\u043e \u043a\u043e\u0440\u0438\u0441\u0442\u0443\u0432\u0430\u0447 \u0437 \u0442\u0430\u043a\u0438\u043c \u0456\u0434\u0435\u043d\u0442\u0438\u0444\u0456\u043a\u0430\u0442\u043e\u0440\u043e\u043c \u0456\u0441\u043d\u0443\u0454 \u2014 \u043f\u043e\u0432\u0435\u0440\u0442\u0430\u0454\u0442\u044c\u0441\u044f \u043d\u043e\u0432\u0438\u0439 \u0442\u043e\u043a\u0435\u043d; \u0456\u043d\u0430\u043a\u0448\u0435 \u0441\u0442\u0432\u043e\u0440\u044e\u0454\u0442\u044c\u0441\u044f \u043d\u043e\u0432\u0438\u0439 \u043e\u0431\u043b\u0456\u043a\u043e\u0432\u0438\u0439 \u0437\u0430\u043f\u0438\u0441.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"token\":\"1|xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\"user\":{\"id\":1,\"device_uuid\":\"550e8400-e29b-41d4-a716-446655440000\"}}",
+                            "name": "\u0423\u0441\u043f\u0456\u0445"
+                        }
+                    ]
+                },
+                {
+                    "name": "\u0420\u0435\u0454\u0441\u0442\u0440\u0430\u0446\u0456\u044f \u043d\u043e\u0432\u043e\u0433\u043e \u043a\u043e\u0440\u0438\u0441\u0442\u0443\u0432\u0430\u0447\u0430 \u0437\u0430 email \u0442\u0430 \u043f\u0430\u0440\u043e\u043b\u0435\u043c.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/auth\/register",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/auth\/register"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"\u0406\u0432\u0430\u043d\",\"email\":\"ivan@example.com\",\"password\":\"secret12\",\"password_confirmation\":\"secret12\"}"
+                        },
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 201,
+                            "body": "{\"token\":\"1|xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\"user\":{\"id\":1,\"name\":\"\\u0406\\u0432\\u0430\\u043d\",\"email\":\"ivan@example.com\"}}",
+                            "name": "\u0423\u0441\u043f\u0456\u0445"
+                        }
+                    ]
+                },
+                {
+                    "name": "\u0412\u0445\u0456\u0434 \u0437\u0430 email \u0442\u0430 \u043f\u0430\u0440\u043e\u043b\u0435\u043c.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/auth\/login",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/auth\/login"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"email\":\"ivan@example.com\",\"password\":\"secret12\"}"
+                        },
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"token\":\"1|xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\"user\":{\"id\":1,\"name\":\"\\u0406\\u0432\\u0430\\u043d\",\"email\":\"ivan@example.com\"}}",
+                            "name": "\u0423\u0441\u043f\u0456\u0445"
+                        }
+                    ]
+                },
+                {
+                    "name": "\u0412\u0438\u0445\u0456\u0434 \u2014 \u0432\u0456\u0434\u043a\u043b\u0438\u043a\u0430\u0454 \u043f\u043e\u0442\u043e\u0447\u043d\u0438\u0439 \u0442\u043e\u043a\u0435\u043d.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/auth\/logout",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/auth\/logout"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 204,
+                            "body": null,
+                            "name": "\u0422\u043e\u043a\u0435\u043d \u0432\u0456\u0434\u043a\u043b\u0438\u043a\u0430\u043d\u043e"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Profile",
+            "description": "",
+            "item": [
+                {
+                    "name": "\u041f\u043e\u0442\u043e\u0447\u043d\u0438\u0439 \u0430\u0432\u0442\u0435\u043d\u0442\u0438\u0444\u0456\u043a\u043e\u0432\u0430\u043d\u0438\u0439 \u043a\u043e\u0440\u0438\u0441\u0442\u0443\u0432\u0430\u0447 (\u043f\u0435\u0440\u0435\u0432\u0456\u0440\u043a\u0430 \u0442\u043e\u043a\u0435\u043d\u0430).",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/user",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/user"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"id\":1,\"name\":\"MoneyTalks\",\"email\":\"device-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx@devices.moneytalks\",\"device_uuid\":\"550e8400-e29b-41d4-a716-446655440000\",\"email_verified_at\":null,\"created_at\":\"2026-05-11T12:00:00.000000Z\",\"updated_at\":\"2026-05-11T12:00:00.000000Z\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "\u041e\u043d\u043e\u0432\u0438\u0442\u0438 \u043f\u0440\u043e\u0444\u0456\u043b\u044c \u043f\u043e\u0442\u043e\u0447\u043d\u043e\u0433\u043e \u043a\u043e\u0440\u0438\u0441\u0442\u0443\u0432\u0430\u0447\u0430.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/profile",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/profile"
+                        },
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"\u0406\u0432\u0430\u043d\"}"
+                        },
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"id\":1,\"name\":\"\\u0406\\u0432\\u0430\\u043d\",\"email\":\"ivan@example.com\"}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Transactions",
+            "description": "",
+            "item": [
+                {
+                    "name": "\u0421\u043f\u0438\u0441\u043e\u043a \u0442\u0440\u0430\u043d\u0437\u0430\u043a\u0446\u0456\u0439 \u043f\u043e\u0442\u043e\u0447\u043d\u043e\u0433\u043e \u043a\u043e\u0440\u0438\u0441\u0442\u0443\u0432\u0430\u0447\u0430 (\u043f\u0430\u0433\u0456\u043d\u0430\u0446\u0456\u044f Laravel).",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/transactions",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/transactions"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\":[],\"current_page\":1,\"per_page\":50,\"total\":0}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "\u0421\u0442\u0432\u043e\u0440\u0438\u0442\u0438 \u0442\u0440\u0430\u043d\u0437\u0430\u043a\u0446\u0456\u044e (\u0434\u043e\u0445\u0456\u0434 \u0430\u0431\u043e \u0432\u0438\u0442\u0440\u0430\u0442\u0430).",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/transactions",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/transactions"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"type\":\"expense\",\"amount\":150.5,\"currency\":\"UAH\",\"category\":\"\u041f\u0440\u043e\u0434\u0443\u043a\u0442\u0438\",\"note\":\"\u0420\u0438\u043d\u043e\u043a\",\"occurred_at\":\"2026-05-11T12:00:00Z\"}"
+                        },
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 201,
+                            "body": "{\"id\":1,\"user_id\":1,\"type\":\"expense\",\"amount\":\"150.50\",\"currency\":\"UAH\",\"category\":\"\\u041f\\u0440\\u043e\\u0434\\u0443\\u043a\\u0442\\u0438\",\"note\":\"\\u0420\\u0438\\u043d\\u043e\\u043a\",\"occurred_at\":\"2026-05-11T12:00:00.000000Z\",\"created_at\":\"2026-05-11T12:00:00.000000Z\",\"updated_at\":\"2026-05-11T12:00:00.000000Z\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "\u041e\u043d\u043e\u0432\u0438\u0442\u0438 \u0442\u0440\u0430\u043d\u0437\u0430\u043a\u0446\u0456\u044e. \u0427\u0443\u0436\u0456 \u0437\u0430\u043f\u0438\u0441\u0438 \u043f\u043e\u0432\u0435\u0440\u0442\u0430\u044e\u0442\u044c 404.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/transactions\/:transaction_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/transactions\/:transaction_id",
+                            "variable": [
+                                {
+                                    "id": "transaction_id",
+                                    "key": "transaction_id",
+                                    "value": "1",
+                                    "description": "The ID of the transaction."
+                                },
+                                {
+                                    "id": "transaction",
+                                    "key": "transaction",
+                                    "value": "1",
+                                    "description": "ID \u0442\u0440\u0430\u043d\u0437\u0430\u043a\u0446\u0456\u0457."
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"type\":\"expense\",\"amount\":150.5,\"currency\":\"UAH\",\"category\":\"\u041f\u0440\u043e\u0434\u0443\u043a\u0442\u0438\",\"note\":\"\u0420\u0438\u043d\u043e\u043a\",\"occurred_at\":\"2026-05-11T12:00:00Z\"}"
+                        },
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"id\":1,\"user_id\":1,\"type\":\"expense\",\"amount\":\"150.50\",\"currency\":\"UAH\",\"category\":\"\\u041f\\u0440\\u043e\\u0434\\u0443\\u043a\\u0442\\u0438\",\"note\":\"\\u0420\\u0438\\u043d\\u043e\\u043a\",\"occurred_at\":\"2026-05-11T12:00:00.000000Z\",\"created_at\":\"2026-05-11T12:00:00.000000Z\",\"updated_at\":\"2026-05-11T12:00:00.000000Z\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "\u0412\u0438\u0434\u0430\u043b\u0438\u0442\u0438 \u0442\u0440\u0430\u043d\u0437\u0430\u043a\u0446\u0456\u044e. \u0427\u0443\u0436\u0456 \u0437\u0430\u043f\u0438\u0441\u0438 \u043f\u043e\u0432\u0435\u0440\u0442\u0430\u044e\u0442\u044c 404.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/transactions\/:transaction_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/transactions\/:transaction_id",
+                            "variable": [
+                                {
+                                    "id": "transaction_id",
+                                    "key": "transaction_id",
+                                    "value": "1",
+                                    "description": "The ID of the transaction."
+                                },
+                                {
+                                    "id": "transaction",
+                                    "key": "transaction",
+                                    "value": "1",
+                                    "description": "ID \u0442\u0440\u0430\u043d\u0437\u0430\u043a\u0446\u0456\u0457."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 204,
+                            "body": null,
+                            "name": "\u0423\u0441\u043f\u0456\u0448\u043d\u043e \u0432\u0438\u0434\u0430\u043b\u0435\u043d\u043e"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Statistics",
+            "description": "",
+            "item": [
+                {
+                    "name": "\u041f\u0456\u0434\u0441\u0443\u043c\u043a\u0438 \u0434\u043e\u0445\u043e\u0434\u0456\u0432\/\u0432\u0438\u0442\u0440\u0430\u0442 \u0456 \u043f\u043e\u043c\u0456\u0441\u044f\u0447\u043d\u0456 \u0441\u0443\u043c\u0438 \u0434\u043b\u044f \u0433\u0440\u0430\u0444\u0456\u043a\u0456\u0432 (\u043e\u0441\u0442\u0430\u043d\u043d\u0456 ~6 \u043c\u0456\u0441\u044f\u0446\u0456\u0432).",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/stats\/summary",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/stats\/summary"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"totals\":{\"income\":12000.5,\"expense\":4300},\"monthly\":[{\"ym\":\"2026-01\",\"income\":8000,\"expense\":2100}]}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "auth": {
+        "type": "bearer",
+        "bearer": [
+            {
+                "key": "key",
+                "type": "string"
+            }
+        ]
+    }
+}

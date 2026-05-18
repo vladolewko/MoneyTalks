@@ -41,6 +41,37 @@ php artisan boost:install
 
 Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
 
+## MoneyTalks local API (DDEV)
+
+From this `backend` directory:
+
+```bash
+ddev start
+ddev composer install
+cp .env.example .env
+ddev artisan key:generate
+# Point APP_URL at the DDEV URL and switch DB_* to MySQL (see .env.example comments).
+ddev artisan migrate
+```
+
+The HTTPS project URL is printed by `ddev describe`. The Expo app in `../mobile` reads `EXPO_PUBLIC_API_URL` (see `../mobile/.env.example`).
+
+### API documentation (Scribe)
+
+After `ddev start`, open (replace host with your DDEV hostname):
+
+- Interactive HTML: `https://<project>.ddev.site/docs/index.html`
+- OpenAPI 3: `https://<project>.ddev.site/docs/openapi.yaml`
+- Postman collection: `https://<project>.ddev.site/docs/collection.json`
+
+Regenerate after changing routes, request bodies, or response shapes:
+
+```bash
+composer run docs
+```
+
+See also `../docs/API.md` and `../docs/TZ.md` (documentation policy).
+
 ## Contributing
 
 Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).

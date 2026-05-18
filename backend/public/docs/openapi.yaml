@@ -1,0 +1,604 @@
+openapi: 3.0.3
+info:
+  title: 'MoneyTalks API'
+  description: 'REST API мобільного трекера фінансів MoneyTalks (Laravel + Sanctum).'
+  version: 1.0.0
+servers:
+  -
+    url: 'https://moneytalks.ddev.site'
+tags:
+  -
+    name: Authentication
+    description: ''
+  -
+    name: Profile
+    description: ''
+  -
+    name: Transactions
+    description: ''
+  -
+    name: Statistics
+    description: ''
+components:
+  securitySchemes:
+    default:
+      type: http
+      scheme: bearer
+      description: 'Отримайте токен через `POST /api/auth/device` (поле `token` у відповіді). Для автоматичних «response calls» Scribe можна задати `SCRIBE_AUTH_KEY` у `.env` (див. `.env.example`).'
+security:
+  -
+    default: []
+paths:
+  /api/auth/device:
+    post:
+      summary: 'Реєстрація або вхід за пристроєм.'
+      operationId: ''
+      description: 'Клієнт надсилає стабільний `device_uuid`. Якщо користувач з таким ідентифікатором існує — повертається новий токен; інакше створюється новий обліковий запис.'
+      parameters: []
+      responses:
+        200:
+          description: Успіх
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  token: 1|xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                  user:
+                    id: 1
+                    device_uuid: 550e8400-e29b-41d4-a716-446655440000
+                properties:
+                  token:
+                    type: string
+                    example: 1|xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      device_uuid:
+                        type: string
+                        example: 550e8400-e29b-41d4-a716-446655440000
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                device_uuid:
+                  type: string
+                  description: 'Стабільний UUID пристрою (зберігається в AsyncStorage на клієнті).'
+                  example: 550e8400-e29b-41d4-a716-446655440000
+              required:
+                - device_uuid
+      security: []
+  /api/auth/register:
+    post:
+      summary: 'Реєстрація нового користувача за email та паролем.'
+      operationId: Email
+      description: ''
+      parameters: []
+      responses:
+        201:
+          description: Успіх
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  token: 1|xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                  user:
+                    id: 1
+                    name: Іван
+                    email: ivan@example.com
+                properties:
+                  token:
+                    type: string
+                    example: 1|xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: Іван
+                      email:
+                        type: string
+                        example: ivan@example.com
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: "Ім'я користувача."
+                  example: Іван
+                email:
+                  type: string
+                  description: 'Email адреса.'
+                  example: ivan@example.com
+                password:
+                  type: string
+                  description: 'Пароль (мінімум 8 символів).'
+                  example: secret12
+                password_confirmation:
+                  type: string
+                  description: 'Підтвердження пароля.'
+                  example: secret12
+              required:
+                - name
+                - email
+                - password
+                - password_confirmation
+      security: []
+  /api/auth/login:
+    post:
+      summary: 'Вхід за email та паролем.'
+      operationId: Email
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: Успіх
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  token: 1|xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                  user:
+                    id: 1
+                    name: Іван
+                    email: ivan@example.com
+                properties:
+                  token:
+                    type: string
+                    example: 1|xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: Іван
+                      email:
+                        type: string
+                        example: ivan@example.com
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'Email адреса.'
+                  example: ivan@example.com
+                password:
+                  type: string
+                  description: Пароль.
+                  example: secret12
+              required:
+                - email
+                - password
+      security: []
+  /api/auth/logout:
+    post:
+      summary: 'Вихід — відкликає поточний токен.'
+      operationId: ''
+      description: ''
+      parameters: []
+      responses:
+        204:
+          description: 'Токен відкликано'
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+      tags:
+        - Authentication
+  /api/user:
+    get:
+      summary: 'Поточний автентифікований користувач (перевірка токена).'
+      operationId: ''
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1
+                  name: MoneyTalks
+                  email: device-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx@devices.moneytalks
+                  device_uuid: 550e8400-e29b-41d4-a716-446655440000
+                  email_verified_at: null
+                  created_at: '2026-05-11T12:00:00.000000Z'
+                  updated_at: '2026-05-11T12:00:00.000000Z'
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  name:
+                    type: string
+                    example: MoneyTalks
+                  email:
+                    type: string
+                    example: device-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx@devices.moneytalks
+                  device_uuid:
+                    type: string
+                    example: 550e8400-e29b-41d4-a716-446655440000
+                  email_verified_at:
+                    type: string
+                    example: null
+                    nullable: true
+                  created_at:
+                    type: string
+                    example: '2026-05-11T12:00:00.000000Z'
+                  updated_at:
+                    type: string
+                    example: '2026-05-11T12:00:00.000000Z'
+      tags:
+        - Profile
+  /api/profile:
+    patch:
+      summary: 'Оновити профіль поточного користувача.'
+      operationId: ''
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1
+                  name: Іван
+                  email: ivan@example.com
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  name:
+                    type: string
+                    example: Іван
+                  email:
+                    type: string
+                    example: ivan@example.com
+      tags:
+        - Profile
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: "Нове ім'я користувача."
+                  example: Іван
+  /api/transactions:
+    get:
+      summary: 'Список транзакцій поточного користувача (пагінація Laravel).'
+      operationId: Laravel
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data: []
+                  current_page: 1
+                  per_page: 50
+                  total: 0
+                properties:
+                  data:
+                    type: array
+                    example: []
+                  current_page:
+                    type: integer
+                    example: 1
+                  per_page:
+                    type: integer
+                    example: 50
+                  total:
+                    type: integer
+                    example: 0
+      tags:
+        - Transactions
+    post:
+      summary: 'Створити транзакцію (дохід або витрата).'
+      operationId: ''
+      description: ''
+      parameters: []
+      responses:
+        201:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1
+                  user_id: 1
+                  type: expense
+                  amount: '150.50'
+                  currency: UAH
+                  category: Продукти
+                  note: Ринок
+                  occurred_at: '2026-05-11T12:00:00.000000Z'
+                  created_at: '2026-05-11T12:00:00.000000Z'
+                  updated_at: '2026-05-11T12:00:00.000000Z'
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  user_id:
+                    type: integer
+                    example: 1
+                  type:
+                    type: string
+                    example: expense
+                  amount:
+                    type: string
+                    example: '150.50'
+                  currency:
+                    type: string
+                    example: UAH
+                  category:
+                    type: string
+                    example: Продукти
+                  note:
+                    type: string
+                    example: Ринок
+                  occurred_at:
+                    type: string
+                    example: '2026-05-11T12:00:00.000000Z'
+                  created_at:
+                    type: string
+                    example: '2026-05-11T12:00:00.000000Z'
+                  updated_at:
+                    type: string
+                    example: '2026-05-11T12:00:00.000000Z'
+      tags:
+        - Transactions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  description: 'Тип: `income` або `expense`.'
+                  example: expense
+                  enum:
+                    - income
+                    - expense
+                amount:
+                  type: number
+                  description: 'Сума, більше 0.'
+                  example: 150.5
+                currency:
+                  type: string
+                  description: 'ISO 4217, 3 символи. За замовчуванням UAH.'
+                  example: UAH
+                category:
+                  type: string
+                  description: 'Категорія (опційно).'
+                  example: Продукти
+                note:
+                  type: string
+                  description: 'Нотатка (опційно).'
+                  example: Ринок
+                occurred_at:
+                  type: string
+                  description: 'ISO 8601 дата/час події (опційно; якщо немає — поточний час сервера).'
+                  example: '2026-05-11T12:00:00Z'
+              required:
+                - type
+                - amount
+  '/api/transactions/{transaction_id}':
+    put:
+      summary: 'Оновити транзакцію. Чужі записи повертають 404.'
+      operationId: '404'
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1
+                  user_id: 1
+                  type: expense
+                  amount: '150.50'
+                  currency: UAH
+                  category: Продукти
+                  note: Ринок
+                  occurred_at: '2026-05-11T12:00:00.000000Z'
+                  created_at: '2026-05-11T12:00:00.000000Z'
+                  updated_at: '2026-05-11T12:00:00.000000Z'
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  user_id:
+                    type: integer
+                    example: 1
+                  type:
+                    type: string
+                    example: expense
+                  amount:
+                    type: string
+                    example: '150.50'
+                  currency:
+                    type: string
+                    example: UAH
+                  category:
+                    type: string
+                    example: Продукти
+                  note:
+                    type: string
+                    example: Ринок
+                  occurred_at:
+                    type: string
+                    example: '2026-05-11T12:00:00.000000Z'
+                  created_at:
+                    type: string
+                    example: '2026-05-11T12:00:00.000000Z'
+                  updated_at:
+                    type: string
+                    example: '2026-05-11T12:00:00.000000Z'
+      tags:
+        - Transactions
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  description: 'Тип: `income` або `expense`.'
+                  example: expense
+                  enum:
+                    - income
+                    - expense
+                amount:
+                  type: number
+                  description: 'Сума, більше 0.'
+                  example: 150.5
+                currency:
+                  type: string
+                  description: 'ISO 4217, 3 символи.'
+                  example: UAH
+                category:
+                  type: string
+                  description: 'Категорія (опційно).'
+                  example: Продукти
+                note:
+                  type: string
+                  description: 'Нотатка (опційно).'
+                  example: Ринок
+                occurred_at:
+                  type: string
+                  description: 'ISO 8601 дата/час події.'
+                  example: '2026-05-11T12:00:00Z'
+    delete:
+      summary: 'Видалити транзакцію. Чужі записи повертають 404.'
+      operationId: '404'
+      description: ''
+      parameters: []
+      responses:
+        204:
+          description: 'Успішно видалено'
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+      tags:
+        - Transactions
+    parameters:
+      -
+        in: path
+        name: transaction_id
+        description: 'The ID of the transaction.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+      -
+        in: path
+        name: transaction
+        description: 'ID транзакції.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/stats/summary:
+    get:
+      summary: 'Підсумки доходів/витрат і помісячні суми для графіків (останні ~6 місяців).'
+      operationId: '6'
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  totals:
+                    income: 12000.5
+                    expense: 4300
+                  monthly:
+                    -
+                      ym: 2026-01
+                      income: 8000
+                      expense: 2100
+                properties:
+                  totals:
+                    type: object
+                    properties:
+                      income:
+                        type: number
+                        example: 12000.5
+                      expense:
+                        type: integer
+                        example: 4300
+                  monthly:
+                    type: array
+                    example:
+                      -
+                        ym: 2026-01
+                        income: 8000
+                        expense: 2100
+                    items:
+                      type: object
+                      properties:
+                        ym:
+                          type: string
+                          example: 2026-01
+                        income:
+                          type: integer
+                          example: 8000
+                        expense:
+                          type: integer
+                          example: 2100
+      tags:
+        - Statistics
